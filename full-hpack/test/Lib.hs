@@ -1,9 +1,9 @@
-module {{name}} (main, spec) where
+module {{name}}{{^name}}Lib{{/name}} (main, spec) where
 
 import Test.Hspec
 import Test.QuickCheck
 
-import {{name}}
+import {{name}}{{^name}}Lib{{/name}}
 
 main :: IO ()
 main = hspec spec

@@ -31,13 +31,17 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-{-# START_FILE test/{{name}}.hs #-}
-module {{name}} (main, spec) where
+{-# START_FILE test/Spec.hs #-}
+{-# OPTIONS_GHC -F -pgmF hspec-discover #-}
+
+
+{-# START_FILE test/Lib.hs #-}
+module {{name}}{{^name}}Lib{{/name}} (main, spec) where
 
 import Test.Hspec
 import Test.QuickCheck
 
-import {{name}}
+import {{name}}{{^name}}Lib{{/name}}
 
 main :: IO ()
 main = hspec spec
@@ -47,10 +51,6 @@ spec = do
   describe "SomeFunc" $ do
     it "prints 'SomeFunc'" $ do
         SomeFunc `shouldReturn` ()
-{-# START_FILE test/Spec.hs #-}
-{-# OPTIONS_GHC -F -pgmF hspec-discover #-}
-
-
 {-# START_FILE Setup.hs #-}
 import Distribution.Simple
 main = defaultMain
@@ -133,7 +133,7 @@ force-trailing-newline: true
 {-# START_FILE app/Main.hs #-}
 module Main where
 
-import {{name}}
+import {{name}}{{^name}}Lib{{/name}}
 
 main :: IO ()
 main = SomeFunc
@@ -161,14 +161,14 @@ dependencies:
 
 
 library:
-  source-dirs: src
-  exposed-modules:
-    - {{name}}
+  source-dirs:        src
+  exposed-modules:    {{name}}{{^name}}Lib{{/name}}
 
 executable:
   {{name}}:
     main: Main.hs
     source-dirs: app
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
     dependencies:
       - {{name}}
 
@@ -176,29 +176,32 @@ tests:
   {{name}}-test:
     main: Spec.hs
     source-dirs: test
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
     dependencies:
       - {{name}}
       - hspec
+      - QuickCheck
     build-tools: hspec-discover
 
 benchmarks:
   {{name}}-test:
     main: Main.hs
     source-dirs: benchmarks
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
     dependencies:
       - {{name}}
       - criterion
 {-# START_FILE benchmarks/Main.hs #-}
 module Main where
 
-import {{name}}}
+import {{name}}{{^name}}Lib{{/name}}
 import Criterion
 import Criterion.Main
 
 main :: IO ()
 main = helloWorld
-{-# START_FILE src/{{name}}.hs #-}
-module {{name}} (SomeFunc) where
+{-# START_FILE src/Lib.hs #-}
+module {{name}}{{^name}}Lib{{/name}} (SomeFunc) where
 
 SomeFunc :: IO ()
 SomeFunc = putStrLn "SomeFunc"

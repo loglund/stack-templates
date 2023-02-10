@@ -1,6 +1,6 @@
 module Main where
 
-import {{name}}}
+import {{name}}{{^name}}Lib{{/name}}
 import Criterion
 import Criterion.Main
 

@@ -14,14 +14,14 @@ dependencies:
 
 
 library:
-  source-dirs: src
-  exposed-modules:
-    - {{name}}
+  source-dirs:        src
+  exposed-modules:    {{name}}{{^name}}Lib{{/name}}
 
 executable:
   {{name}}:
     main: Main.hs
     source-dirs: app
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
     dependencies:
       - {{name}}
 
@@ -29,15 +29,18 @@ tests:
   {{name}}-test:
     main: Spec.hs
     source-dirs: test
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
     dependencies:
       - {{name}}
       - hspec
+      - QuickCheck
     build-tools: hspec-discover
 
 benchmarks:
   {{name}}-test:
     main: Main.hs
     source-dirs: benchmarks
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
     dependencies:
       - {{name}}
       - criterion
