@@ -3,22 +3,26 @@ version: '0.1.0'
 category: {{category}}{{^category}}Web{{/category}}
 author: {{author-name}}{{^author-name}}Author name here{{/author-name}}
 maintainer: {{author-email}}{{^author-email}}example@example.com{{/author-email}}
-copyright: {{copyright}}{{^copyright}}{{year}}{{^year}}2017{{/year}} {{author-name}}{{^author-name}}Author name here{{/author-name}}{{/copyright}}
+copyright: {{copyright}}{{^copyright}}{{year}}{{^year}}2023{{/year}} {{author-name}}{{^author-name}}Author name here{{/author-name}}{{/copyright}}
 license: BSD3
 github: {{github-username}}{{^github-username}}githubuser{{/github-username}}/{{name}}
 
+ghc-options: -Wall -O2
+
 dependencies:
-- base >=4.7 && <5
-ghc-options:
-- -Wall
-- -threaded
-- -rtsopts
-- -with-rtsopts=-N
+  - base >=4.7 && <5
+
+when:
+  - condition: impl(ghc >= 9.4.1)
+    then:
+      dependencies: ghc-lib-parser >= 9.4.1.20220807 && < 9.5
+    else:
+      dependencies: ghc-lib-parser >= 9.2.3.20220527 && < 9.3
 
 library:
   source-dirs: src
 
-executables:
+executable:
   {{name}}:
     main: Main.hs
     source-dirs: app
@@ -33,3 +37,10 @@ tests:
     - {{name}}
     - hspec
 
+benchmarks:
+  {{name}}-test:
+    main: Main.hs
+    source-dirs: benchmarks
+    dependencies:
+    - {{name}}
+    - criterion
