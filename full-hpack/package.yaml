@@ -7,40 +7,37 @@ copyright: {{copyright}}{{^copyright}}{{year}}{{^year}}2023{{/year}} {{author-na
 license: BSD3
 github: {{github-username}}{{^github-username}}githubuser{{/github-username}}/{{name}}
 
-ghc-options: -Wall -O2
+ghc-options: -Wall -fno-warn-incomplete-uni-patterns
 
 dependencies:
-  - base >=4.7 && <5
+  - base >=4.9 && <5
 
-when:
-  - condition: impl(ghc >= 9.4.1)
-    then:
-      dependencies: ghc-lib-parser >= 9.4.1.20220807 && < 9.5
-    else:
-      dependencies: ghc-lib-parser >= 9.2.3.20220527 && < 9.3
 
 library:
   source-dirs: src
+  exposed-modules:
+    - {{name}}
 
 executable:
   {{name}}:
     main: Main.hs
     source-dirs: app
     dependencies:
-    - {{name}}
+      - {{name}}
 
 tests:
   {{name}}-test:
     main: Spec.hs
     source-dirs: test
     dependencies:
-    - {{name}}
-    - hspec
+      - {{name}}
+      - hspec
+    build-tools: hspec-discover
 
 benchmarks:
   {{name}}-test:
     main: Main.hs
     source-dirs: benchmarks
     dependencies:
-    - {{name}}
-    - criterion
+      - {{name}}
+      - criterion
