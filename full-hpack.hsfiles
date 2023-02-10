@@ -133,7 +133,7 @@ force-trailing-newline: true
 {-# START_FILE app/Main.hs #-}
 module Main where
 
-import {{name}}{{^name}}Lib{{/name}}
+import 
 
 main :: IO ()
 main = SomeFunc
@@ -201,7 +201,7 @@ import Criterion.Main
 main :: IO ()
 main = helloWorld
 {-# START_FILE src/Lib.hs #-}
-module {{name}}{{^name}}Lib{{/name}} (SomeFunc) where
+module {{#lambda.titlecase}}{{name}}{{/lambda.titlecase}} (SomeFunc) where
 
 SomeFunc :: IO ()
 SomeFunc = putStrLn "SomeFunc"
